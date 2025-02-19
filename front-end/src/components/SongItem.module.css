@@ -1,0 +1,43 @@
+.song__item {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 10px 25px;
+  border-radius: var(--border-radius-s);
+  transition: background-color var(--transition-function)
+    var(--transition-duration);
+  gap: 15px;
+}
+
+.song__item:hover {
+  background-color: var(--green-800);
+  text-decoration: none;
+}
+
+.song__item__name:hover {
+  text-decoration: underline;
+}
+
+.song__item__image {
+  width: 40px;
+  height: 40px;
+  border-radius: var(--border-radius-s);
+}
+
+.song__item__album {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.song__item__number__album {
+  display: flex;
+  align-items: center;
+  gap: 25px;
+}
+
+@media (max-width: 480px) {
+  .song__item {
+    padding: 10px 16px;
+  }
+}

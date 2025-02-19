@@ -1,0 +1,15 @@
+import React from 'react';
+import logoSpotify from '../assets/logo/spotify-logo.png';
+import styles from './Header.module.css';
+import { Link } from 'react-router-dom';
+
+const Header = () => {
+  return (
+    <div className={styles.header}>
+      <Link to="/"><img src={logoSpotify} alt="Spotify Logo" /></Link>
+      <Link className={styles.header__link} to="/"><h1>Spotify</h1></Link>
+    </div>
+  )
+}
+
+export default Header
