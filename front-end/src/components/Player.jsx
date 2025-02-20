@@ -15,55 +15,59 @@ const Player = ({
   randomIdFromArtistNext,
   audio,
 }) => {
-  function formatTime(timeInSeconds) {
-    const minutes = Math.floor(timeInSeconds / 60)
-      .toString()
-      .padStart(2, 0);
-    const seconds = Math.floor(timeInSeconds - minutes * 60)
-      .toString()
-      .padStart(2, 0);
-
-    return `${minutes}:${seconds}`;
-  }
-
-  function convertToSeconds(timeString) {
-    const splitArray = timeString.split(':');
-    const minutes = Number(splitArray[0]);
-    const seconds = Number(splitArray[1]);
-
-    return seconds + minutes * 60;
-  }
-
   const audioPlayer = useRef();
   const progressBar = useRef();
   const [isPlaying, setIsPlaying] = useState(false);
-  const [currentTime, setCurrentTime] = useState(formatTime(0));
+  const [currentTime, setCurrentTime] = useState('00:00');
+  
+  function formatTime(timeInSeconds) {
+    const minutes = Math.floor(timeInSeconds / 60).toString().padStart(2, '0');
+    const seconds = Math.floor(timeInSeconds % 60).toString().padStart(2, '0');
+    return `${minutes}:${seconds}`;
+  }
+
   const durationInSeconds = convertToSeconds(duration);
 
+  function convertToSeconds(timeString) {
+    const [minutes, seconds] = timeString.split(':').map(Number);
+    return seconds + minutes * 60;
+  }
+
   function handlePlayer() {
-    isPlaying ? audioPlayer.current.pause() : audioPlayer.current.play();
+    if (isPlaying) {
+      audioPlayer.current.pause();
+    } else {
+      audioPlayer.current.play();
+    }
     setIsPlaying(!isPlaying);
-    setCurrentTime(formatTime(audioPlayer.current.currentTime));
   }
 
   useEffect(() => {
     const intervalID = setInterval(() => {
-      isPlaying && setCurrentTime(formatTime(audioPlayer.current.currentTime));
-      const progressWidth = (audioPlayer.current.currentTime / durationInSeconds) * 100;
-    progressBar.current.style.setProperty('--_progress', `${progressWidth}%` );
+      if (isPlaying) {
+        setCurrentTime(formatTime(audioPlayer.current.currentTime));
+        const progressWidth = (audioPlayer.current.currentTime / durationInSeconds) * 100;
+        progressBar.current.style.setProperty('--_progress', `${progressWidth}%`);
+      }
     }, 1000);
 
     return () => clearInterval(intervalID);
-  }, [isPlaying]);
+  }, [isPlaying, durationInSeconds]);
+
+  useEffect(() => {
+    if (audioPlayer.current) {
+      audioPlayer.current.src = audio;
+      audioPlayer.current.load(); // Carrega a nova fonte
+      audioPlayer.current.play(); // Toca a nova música
+      setIsPlaying(true); // Inicia a reprodução
+    }
+  }, [audio]);
 
   return (
     <div className={styles.player}>
       <div className={styles.player__controllers}>
         <Link to={`/song/${randomIdFromArtistPrev}`}>
-          <FontAwesomeIcon
-            className={styles.player__icon}
-            icon={faBackwardStep}
-          />
+          <FontAwesomeIcon className={styles.player__icon} icon={faBackwardStep} />
         </Link>
         <FontAwesomeIcon
           className={`${styles.player__icon} ${styles.player__icon__play}`}
@@ -71,10 +75,7 @@ const Player = ({
           onClick={handlePlayer}
         />
         <Link to={`/song/${randomIdFromArtistNext}`}>
-          <FontAwesomeIcon
-            className={styles.player__icon}
-            icon={faForwardStep}
-          />
+          <FontAwesomeIcon className={styles.player__icon} icon={faForwardStep} />
         </Link>
       </div>
       <div className={styles.player__progress}>
@@ -83,7 +84,7 @@ const Player = ({
           <div ref={progressBar} className={styles.player__bar__progress}></div>
         </div>
         <p>{duration}</p>
-        <audio ref={audioPlayer} src={audio}></audio>
+        <audio ref={audioPlayer} />
       </div>
     </div>
   );

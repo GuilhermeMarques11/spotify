@@ -1,13 +1,14 @@
 import React from 'react';
 import styles from './SingleSong.module.css';
 import Player from '../components/Player';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useNavigate, useParams } from 'react-router-dom';
 import { songsArray } from '../assets/database/songs';
 import { artistArray } from '../assets/database/artists';
 
 const SingleSong = () => {
   // Obtém o parâmetro 'id' da URL usando useParams
   const { id } = useParams();
+  const navigate = useNavigate();
 
   // Filtra o array de músicas para encontrar a música correspondente ao 'id' fornecido
   const { image, name, duration, artist, audio } = songsArray.filter(
@@ -35,8 +36,8 @@ const SingleSong = () => {
   );
 
   // Obtém os IDs das músicas aleatórias selecionadas
-  const randomIdFromArtistPrev = songsArrayFromCurrentArtist[randomIndex]._id;
-  const randomIdFromArtistNext = songsArrayFromCurrentArtist[randomIndex2]._id;
+  const randomIdFromArtistPrev = songsArrayFromCurrentArtist[Math.floor(Math.random() * songsArrayFromCurrentArtist.length)]._id;
+  const randomIdFromArtistNext = songsArrayFromCurrentArtist[Math.floor(Math.random() * songsArrayFromCurrentArtist.length)]._id;
 
   return (
     <div className={styles.song}>
