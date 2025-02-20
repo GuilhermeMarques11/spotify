@@ -1,0 +1,20 @@
+{
+  "name": "spotify",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "build": "npm install --prefix back-end && npm install --prefix front-end && npm run build --prefix front-end",
+    "start": "npm run start --prefix back-end"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/GuilhermeMarques11/spotify.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/GuilhermeMarques11/spotify/issues"
+  },
+  "homepage": "https://github.com/GuilhermeMarques11/spotify#readme",
+  "description": ""
+}
