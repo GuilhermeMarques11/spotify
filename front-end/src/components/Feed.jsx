@@ -21,16 +21,17 @@ const Feed = ({ type }) => {
           <></>
         )}
 
-        {type === 'songs' ||
-          (type === undefined && (
-            <ItemList
-              title="Músicas"
-              items={10}
-              itemsArray={songsArray}
-              path="songs"
-              idPath="/song"
-            />
-          ))}
+        {type === 'songs' || type === undefined ? (
+          <ItemList
+            title="Músicas"
+            items={20}
+            itemsArray={songsArray}
+            path="/songs"
+            idPath="/song"
+          />
+        ) : (
+          <></>
+        )}
       </div>
       <Footer />
     </>
